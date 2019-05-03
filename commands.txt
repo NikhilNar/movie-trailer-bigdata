@@ -9,3 +9,10 @@ docker run --rm -it --net=host landoop/fast-data-dev bash
 create kafka topics
 kafka-topics --zookeeper 192.168.99.100:2181 --create --topic movie_users_mapping --partitions 3 --replication-factor 1
 kafka-topics --zookeeper 192.168.99.100:2181 --create --topic movie_ratings --partitions 3 --replication-factor 1
+
+
+2) MongoDB
+
+use movie_analysis
+
+db.createUser({user:"admin", pwd:"admin", roles:["readWrite", "dbAdmin"]});

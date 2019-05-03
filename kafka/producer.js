@@ -38,9 +38,17 @@ const publish = (data) => {
       }]
       producer.send(payloads, function(err, data) {
         console.log(data);
+        if(err){
+          console.log("err occured in kafka=", err);
+          reject("Something is wrong. Please try again after sometime!!")
+        }
+        return
       });
+      resolve(data)
     }
-    resolve(data)
+    else
+      reject("Something is wrong. Please try again after sometime!!")
+
   })
 }
 

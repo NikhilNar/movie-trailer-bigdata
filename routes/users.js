@@ -12,7 +12,7 @@ router.post('/movie-watched', function(req, res, next) {
       res.send(Message.generateMessage(200,data,"data published successfully"));
   })
   .catch(err=>{
-    console.log("err=",err);
+    res.send(Message.generateMessage(422,{},err));
   })
 
 });
