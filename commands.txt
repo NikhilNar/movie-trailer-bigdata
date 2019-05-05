@@ -13,6 +13,12 @@ kafka-topics --zookeeper 192.168.99.100:2181 --create --topic movie_ratings --pa
 
 2) MongoDB
 
+winpty docker exec -it mongodb bash
+
 use movie_analysis
 
 db.createUser({user:"admin", pwd:"admin", roles:["readWrite", "dbAdmin"]});
+
+https://blog.jeremylikness.com/mongodb-on-windows-in-minutes-with-docker-3e412f076762
+
+ mongo --host mongodb://admin:admin@192.168.99.100:27017/movie_analysis

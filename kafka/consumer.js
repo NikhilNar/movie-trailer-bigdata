@@ -1,10 +1,11 @@
+import{
+  userModel
+}
+from '../models'
 var kafka = require('kafka-node');
 //var HighLevelConsumer = kafka.HighLevelConsumer;
 var ConsumerGroup = kafka.ConsumerGroup;
-var Client = kafka.Client;
-const client = new kafka.KafkaClient({
-  kafkaHost: '192.168.99.100:9092'
-});
+
 var topics = ['movie_users_mapping','movie_ratings'];
 var options = {
   kafkaHost: '192.168.99.100:9092', // connect directly to kafka broker (instantiates a KafkaClient)
@@ -32,6 +33,16 @@ var consumerGroup = new ConsumerGroup(options, topics);
 
 
 consumerGroup.on('message', function(message) {
+  let data=JSON.parse(message.value)
+  console.log("userModel=====",userModel);
+  let userModelObj=new userModel(data)
+  userModelObj.save()
+  .then(data=>{
+    console.log("data added in Mongo");
+  })
+  .catch(err=>{
+    console.log("err in consumer=",err);
+  })
   console.log(message);
 });
 
