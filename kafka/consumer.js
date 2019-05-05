@@ -1,12 +1,12 @@
-import{
-  userModel
+import {
+  UserModel
 }
-from '../models'
+  from '../models'
 var kafka = require('kafka-node');
 //var HighLevelConsumer = kafka.HighLevelConsumer;
 var ConsumerGroup = kafka.ConsumerGroup;
 
-var topics = ['movie_users_mapping','movie_ratings'];
+var topics = ['movie_users_mapping', 'movie_ratings'];
 var options = {
   kafkaHost: '192.168.99.100:9092', // connect directly to kafka broker (instantiates a KafkaClient)
   batch: undefined, // put client batch settings if you need them
@@ -32,26 +32,26 @@ var options = {
 var consumerGroup = new ConsumerGroup(options, topics);
 
 
-consumerGroup.on('message', function(message) {
-  let data=JSON.parse(message.value)
-  console.log("userModel=====",userModel);
-  let userModelObj=new userModel(data)
+consumerGroup.on('message', function (message) {
+  let data = JSON.parse(message.value)
+  console.log("userModel=====", UserModel);
+  let userModelObj = new UserModel(data)
   userModelObj.save()
-  .then(data=>{
-    console.log("data added in Mongo");
-  })
-  .catch(err=>{
-    console.log("err in consumer=",err);
-  })
+    .then(data => {
+      console.log("data added in Mongo");
+    })
+    .catch(err => {
+      console.log("err in consumer=", err);
+    })
   console.log(message);
 });
 
-consumerGroup.on('error', function(err) {
+consumerGroup.on('error', function (err) {
   console.log('error', err);
 });
 
-process.on('SIGINT', function() {
-  consumerGroup.close(true, function() {
+process.on('SIGINT', function () {
+  consumerGroup.close(true, function () {
     process.exit();
   });
 });
