@@ -6,4 +6,4 @@ var movieUserMatchingsSchema = new mongoose.Schema({
     timestamp: Date
 })
 
-module.exports = mongoose.model('Movie_user_matchings', movieUserMatchingsSchema)
+module.exports = mongoose.model('movie_user_matchings', movieUserMatchingsSchema)

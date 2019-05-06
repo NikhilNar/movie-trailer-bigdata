@@ -9,4 +9,4 @@ var movieSchema = new mongoose.Schema({
     youtube_id: String
 })
 
-module.exports = mongoose.model('Movies', movieSchema)
+module.exports = mongoose.model('movies', movieSchema)
