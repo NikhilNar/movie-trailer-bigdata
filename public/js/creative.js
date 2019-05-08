@@ -1,3 +1,15 @@
+// init bootpag
+$('#page-selection').bootpag({
+  total: 10,
+  page: 1,
+  maxVisible: 5,
+  leaps: true,
+  href: "#result-page-{{number}}",
+}).on("page", function (event, /* page number here */ num) {
+  console.log("page clicked", num)
+  $("#content").html("Insert content"); // some ajax content loading...
+});
+
 function autocomplete(inp, arr) {
   /*the autocomplete function takes two arguments,
   the text field element and an array of possible autocompleted values:*/
@@ -101,10 +113,10 @@ var countries = ["Afghanistan", "Albania", "Algeria", "Andorra", "Angola", "Angu
 /*initiate the autocomplete function on the "myInput" element, and pass along the countries array as possible autocomplete values:*/
 autocomplete(document.getElementById("myInput"), countries);
 
-$('.modal-toggle').on('click', function (e) {
-  e.preventDefault();
-  $('.modal').toggleClass('is-visible');
-});
+function openModal() {
+  console.log("adsas");
+  $("#myModal").modal()
+}
 
 function closePopup() {
   $('.modal').toggleClass('is-visible');
