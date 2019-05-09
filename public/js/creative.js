@@ -9,6 +9,23 @@ function init(data) {
   setPagination(pages)
 }
 
+function setFilter(value) {
+  filter = value
+}
+
+function setGenre(value) {
+  genre = value
+}
+
+function reloadMovieList() {
+
+  listAPICall(1)
+    .then(() => {
+      setPagination(pages)
+    })
+
+}
+
 function setPagination(pages) {
   let config = {
     total: pages,
@@ -18,9 +35,15 @@ function setPagination(pages) {
     href: "#result-page-{{number}}",
   }
   $('#page-selection').bootpag(config).on("page", function (event, /* page number here */ num) {
-    console.log("page clicked", num)
+    listAPICall(num)
+  });
+}
+
+function listAPICall(page) {
+
+  return new Promise((resolve, reject) => {
     $.ajax({
-      url: "http://localhost:3000/movies/list?filter=all&genre=drama&page=" + num,
+      url: "http://localhost:3000/movies/list?filter=" + filter + "&genre=" + genre + "&page=" + page,
       method: "GET",
       dataType: 'json',
       contentType: "application/json",
@@ -28,22 +51,24 @@ function setPagination(pages) {
         if (data.status == 200) {
           let list = data.data.data,
             elem = document.getElementById("image-list")
+          pages = data.data.total_pages
           elem.innerHTML = ""
           list.forEach(function (movie) {
-            elem.innerHTML += `<li onclick="openModal()">
+
+            let modalValue = "openModal(" + JSON.stringify(movie) + ")"
+            elem.innerHTML += `<li data-toggle="modal" data-target="#myModal" onclick='` + modalValue + `'>
               <div>
                         <img id="box1" src='`+ movie.posters + `' class=" display-image" alt="Image Not Found" />
                     </div>
                     <a href="#" class="modal-toggle">`+ movie.title + `</a>
                 </li>`
           })
-
-
+          resolve()
         }
-
       },
     });
-  });
+  })
+
 }
 
 function autocomplete(inp, arr) {
@@ -149,9 +174,14 @@ var countries = ["Afghanistan", "Albania", "Algeria", "Andorra", "Angola", "Angu
 /*initiate the autocomplete function on the "myInput" element, and pass along the countries array as possible autocomplete values:*/
 autocomplete(document.getElementById("myInput"), countries);
 
-function openModal() {
-  console.log("adsas");
-  $("#myModal").modal()
+function openModal(movieObj) {
+  let movie = (typeof (movieObj) == 'string') ? JSON.parse(movieObj) : movieObj
+  let elem = document.getElementById("modalMovieTitle")
+  elem.innerHTML = movie.title
+  elem = document.getElementById("youtubeVideoLink")
+  let youtubeLink = "https://www.youtube.com/embed/" + movie.youtube_id
+
+  elem.innerHTML = `<iframe src="` + youtubeLink + `" allowfullscreen></iframe>`
 }
 
 function closePopup() {

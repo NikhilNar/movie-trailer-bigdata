@@ -39,26 +39,26 @@
 
     <div class="header row">
         <div class="title-text col-5">MOVIES TRAILER</div>
-        <form autocomplete="off" action="/action_page.php" class="title-content col-7">
+        <form autocomplete="off" action="#" class="title-content col-7">
             <div class="autocomplete">
                 <input id="myInput" type="text" name="myCountry" autocomplete="off" placeholder="Country">
             </div>
             <div>
-                <select>
+                <select onchange="setGenre(this.value)">
                     <option value="drama">Drama</option>
-                    <option value="html">Rated</option>
-                    <option value="css">Newly Added</option>
+                    <option value="action">Action</option>
+                    <option value="romance">Romance</option>
                 </select>
             </div>
             <div>
-                <select>
-                    <option value="books">Trending</option>
-                    <option value="html">Rated</option>
-                    <option value="css">Newly Added</option>
+                <select onchange="setFilter(this.value)">
+                    <option value="all">All</option>
+                    <option value="trending">Trending</option>
+                    <option value="ratings">Highly Rated</option>
                 </select>
             </div>
             <div>
-                <input type="submit">
+                <input type="submit" onclick="reloadMovieList()">
             </div>
         </form>
     </div>
@@ -66,7 +66,7 @@
         <div class="examples">
             <ul class="img-list" id="image-list">
                 <% data.list.forEach(function(movie) { %>
-                <li onclick="openModal()">
+                <li data-toggle="modal" data-target="#myModal" onclick="openModal('<%=JSON.stringify(movie)%>')">
                     <div>
                         <img id="box1" src='<%= movie.posters %>' class=" display-image" alt="Image Not Found" />
                     </div>
@@ -110,14 +110,14 @@
         <div class="modal-dialog">
             <div class="modal-wrapper modal-content modal-transition">
                 <div class="modal-header">
-                    <h2 class="modal-heading">Avengers End Game</h2>
+                    <h2 class="modal-heading" id="modalMovieTitle">Avengers End Game</h2>
                     <button type="button" class="modal-close close" onclick="closePopup()"
                         data-dismiss="modal">&times;</button>
                 </div>
 
                 <div class="modal-body">
                     <div class="modal-content">
-                        <div class="o-video">
+                        <div class="o-video" id="youtubeVideoLink">
                             <iframe src="https://www.youtube.com/embed/Kch8n4tcOZQ" allowfullscreen></iframe>
                         </div>
 
