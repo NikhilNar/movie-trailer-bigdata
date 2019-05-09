@@ -56,12 +56,13 @@ function listAPICall(page) {
           list.forEach(function (movie) {
 
             let modalValue = "openModal(" + JSON.stringify(movie) + ")"
-            elem.innerHTML += `<li data-toggle="modal" data-target="#myModal" onclick='` + modalValue + `'>
-              <div>
-                        <img id="box1" src='`+ movie.posters + `' class=" display-image" alt="Image Not Found" />
+            elem.innerHTML += `<div data-toggle="modal" data-target="#myModal" onclick='` + modalValue + `')"
+                    class="col-3 p-3">
+                    <div class="pb-2">
+                        <img id="box1" src='`+ movie.posters + `' class=" display-image" />
                     </div>
                     <a href="#" class="modal-toggle">`+ movie.title + `</a>
-                </li>`
+                </div>`
           })
           resolve()
         }
