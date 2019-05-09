@@ -1,14 +1,50 @@
 // init bootpag
-$('#page-selection').bootpag({
-  total: 10,
-  page: 1,
-  maxVisible: 5,
-  leaps: true,
-  href: "#result-page-{{number}}",
-}).on("page", function (event, /* page number here */ num) {
-  console.log("page clicked", num)
-  $("#content").html("Insert content"); // some ajax content loading...
-});
+let filter, genre, pages
+
+function init(data) {
+  let movieResponse = JSON.parse(data);
+  filter = "all";
+  genre = "drama";
+  pages = movieResponse.total_pages
+  setPagination(pages)
+}
+
+function setPagination(pages) {
+  let config = {
+    total: pages,
+    page: 1,
+    maxVisible: 5,
+    leaps: true,
+    href: "#result-page-{{number}}",
+  }
+  $('#page-selection').bootpag(config).on("page", function (event, /* page number here */ num) {
+    console.log("page clicked", num)
+    $.ajax({
+      url: "http://localhost:3000/movies/list?filter=all&genre=drama&page=" + num,
+      method: "GET",
+      dataType: 'json',
+      contentType: "application/json",
+      success: function (data) {
+        if (data.status == 200) {
+          let list = data.data.data,
+            elem = document.getElementById("image-list")
+          elem.innerHTML = ""
+          list.forEach(function (movie) {
+            elem.innerHTML += `<li onclick="openModal()">
+              <div>
+                        <img id="box1" src='`+ movie.posters + `' class=" display-image" alt="Image Not Found" />
+                    </div>
+                    <a href="#" class="modal-toggle">`+ movie.title + `</a>
+                </li>`
+          })
+
+
+        }
+
+      },
+    });
+  });
+}
 
 function autocomplete(inp, arr) {
   /*the autocomplete function takes two arguments,

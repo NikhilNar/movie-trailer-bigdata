@@ -35,7 +35,7 @@
 
 </head>
 
-<body id="page-top container">
+<body id="page-top container" onload="init('<%=JSON.stringify(data)%>')">
 
     <div class="header row">
         <div class="title-text col-5">MOVIES TRAILER</div>
@@ -64,11 +64,11 @@
     </div>
     <div class="container">
         <div class="examples">
-            <ul class="img-list">
-                <% data.forEach(function(movie) { %>
+            <ul class="img-list" id="image-list">
+                <% data.list.forEach(function(movie) { %>
                 <li onclick="openModal()">
                     <div>
-                        <img id="box1" src='<%= movie.posters %>' class=" display-image" />
+                        <img id="box1" src='<%= movie.posters %>' class=" display-image" alt="Image Not Found" />
                     </div>
                     <a href="#" class="modal-toggle"><%= movie.title %></a>
                 </li>
@@ -77,15 +77,7 @@
 
             </ul>
             <div class="text-center">
-                <!-- <ul class="pagination justify-content-center">
-                    <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item"><a class="page-link" href="#">Next</a></li>
-                </ul> -->
-                <p id="content">Dynamic page content</p>
-                <div id="page-selection">Pagination goes here</div>
+                <div id="page-selection"></div>
             </div>
 
 
@@ -108,54 +100,54 @@
     < !-- < script src = "/vendor/jquery-easing/jquery.easing.min.js" ></script>
             <script src="/vendor/magnific-popup/jquery.magnific-popup.min.js"></script> -->
 
-    < !--Custom scripts for this template-->
-        <script src="/js/creative.js"></script>
+    <!--Custom scripts for this template-->
+    <script src="/js/creative.js"></script>
 
 
-        <!-- Modal -->
+    <!-- Modal -->
 
-        <div class="modal" id="myModal" role="dialog">
-            <div class="modal-dialog">
-                <div class="modal-wrapper modal-content modal-transition">
-                    <div class="modal-header">
-                        <h2 class="modal-heading">Avengers End Game</h2>
-                        <button type="button" class="modal-close close" onclick="closePopup()"
-                            data-dismiss="modal">&times;</button>
-                    </div>
+    <div class="modal" id="myModal" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-wrapper modal-content modal-transition">
+                <div class="modal-header">
+                    <h2 class="modal-heading">Avengers End Game</h2>
+                    <button type="button" class="modal-close close" onclick="closePopup()"
+                        data-dismiss="modal">&times;</button>
+                </div>
 
-                    <div class="modal-body">
-                        <div class="modal-content">
-                            <div class="o-video">
-                                <iframe src="https://www.youtube.com/embed/Kch8n4tcOZQ" allowfullscreen></iframe>
-                            </div>
-
-                            <fieldset class="rating">
-                                <input type="radio" id="star5" name="rating" value="5" /><label class="full" for="star5"
-                                    title="Awesome - 5 stars"></label>
-                                <input type="radio" id="star4half" name="rating" value="4 and a half" /><label
-                                    class="half" for="star4half" title="Pretty good - 4.5 stars"></label>
-                                <input type="radio" id="star4" name="rating" value="4" /><label class="full" for="star4"
-                                    title="Pretty good - 4 stars"></label>
-                                <input type="radio" id="star3half" name="rating" value="3 and a half" /><label
-                                    class="half" for="star3half" title="Meh - 3.5 stars"></label>
-                                <input type="radio" id="star3" name="rating" value="3" /><label class="full" for="star3"
-                                    title="Meh - 3 stars"></label>
-                                <input type="radio" id="star2half" name="rating" value="2 and a half" /><label
-                                    class="half" for="star2half" title="Kinda bad - 2.5 stars"></label>
-                                <input type="radio" id="star2" name="rating" value="2" /><label class="full" for="star2"
-                                    title="Kinda bad - 2 stars"></label>
-                                <input type="radio" id="star1half" name="rating" value="1 and a half" /><label
-                                    class="half" for="star1half" title="Meh - 1.5 stars"></label>
-                                <input type="radio" id="star1" name="rating" value="1" /><label class="full" for="star1"
-                                    title="Sucks big time - 1 star"></label>
-                                <input type="radio" id="starhalf" name="rating" value="half" /><label class="half"
-                                    for="starhalf" title="Sucks big time - 0.5 stars"></label>
-                            </fieldset>
+                <div class="modal-body">
+                    <div class="modal-content">
+                        <div class="o-video">
+                            <iframe src="https://www.youtube.com/embed/Kch8n4tcOZQ" allowfullscreen></iframe>
                         </div>
+
+                        <fieldset class="rating">
+                            <input type="radio" id="star5" name="rating" value="5" /><label class="full" for="star5"
+                                title="Awesome - 5 stars"></label>
+                            <input type="radio" id="star4half" name="rating" value="4 and a half" /><label class="half"
+                                for="star4half" title="Pretty good - 4.5 stars"></label>
+                            <input type="radio" id="star4" name="rating" value="4" /><label class="full" for="star4"
+                                title="Pretty good - 4 stars"></label>
+                            <input type="radio" id="star3half" name="rating" value="3 and a half" /><label class="half"
+                                for="star3half" title="Meh - 3.5 stars"></label>
+                            <input type="radio" id="star3" name="rating" value="3" /><label class="full" for="star3"
+                                title="Meh - 3 stars"></label>
+                            <input type="radio" id="star2half" name="rating" value="2 and a half" /><label class="half"
+                                for="star2half" title="Kinda bad - 2.5 stars"></label>
+                            <input type="radio" id="star2" name="rating" value="2" /><label class="full" for="star2"
+                                title="Kinda bad - 2 stars"></label>
+                            <input type="radio" id="star1half" name="rating" value="1 and a half" /><label class="half"
+                                for="star1half" title="Meh - 1.5 stars"></label>
+                            <input type="radio" id="star1" name="rating" value="1" /><label class="full" for="star1"
+                                title="Sucks big time - 1 star"></label>
+                            <input type="radio" id="starhalf" name="rating" value="half" /><label class="half"
+                                for="starhalf" title="Sucks big time - 0.5 stars"></label>
+                        </fieldset>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
 
 </body>
 

@@ -10,13 +10,17 @@ router.get('/', function (req, res, next) {
 });
 
 router.get('/movies-trailer/:id', function (req, res, next) {
-  axios.get('http://localhost:3000/movies/list?filter=trending&genre=drama')
+  axios.get('http://localhost:3000/movies/list?filter=all&genre=drama&page=1')
     .then(data => {
       if (data.data && data.data.status == 200) {
         let list = {
-          "data": data.data.data
-        }
-        res.render('movies_trailer', list);
+          "total_pages": data.data.data.total_pages,
+          "list": data.data.data.data
+        },
+          movieList = {
+            "data": list
+          }
+        res.render('movies_trailer', movieList);
       }
       else {
         let errMessage = {
