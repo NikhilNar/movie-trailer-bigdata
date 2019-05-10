@@ -3,6 +3,7 @@ import {
   MovieUserMatchingsModel
 }
   from '../models'
+var moment = require('moment')
 var kafka = require('kafka-node');
 //var HighLevelConsumer = kafka.HighLevelConsumer;
 var ConsumerGroup = kafka.ConsumerGroup;
@@ -36,6 +37,7 @@ var consumerGroup = new ConsumerGroup(options, topics);
 consumerGroup.on('message', function (message) {
   let data = JSON.parse(message.value),
     promise;
+  data["timestamp"] = moment().format("YYYY-MM-DD HH:MM:ss")
 
   if (message.topic == "movie_ratings") {
     promise = new RatingsModel(data).save()

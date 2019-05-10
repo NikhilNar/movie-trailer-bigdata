@@ -176,15 +176,43 @@ var countries = ["Afghanistan", "Albania", "Algeria", "Andorra", "Angola", "Angu
 autocomplete(document.getElementById("myInput"), countries);
 
 function openModal(movieObj) {
+
   let movie = (typeof (movieObj) == 'string') ? JSON.parse(movieObj) : movieObj
-  let elem = document.getElementById("modalMovieTitle")
+  let elem = document.getElementById("modalMovieTitle"),
+    url = window.location.href,
+    userId = parseInt(url.substring(url.indexOf('movies-trailer') + 15).match(/\d/g).join(""))
   elem.innerHTML = movie.title
   elem = document.getElementById("youtubeVideoLink")
   let youtubeLink = "https://www.youtube.com/embed/" + movie.youtube_id
 
   elem.innerHTML = `<iframe src="` + youtubeLink + `" allowfullscreen></iframe>`
+
+  let req = {
+    "topic": "movie_users_mapping",
+    "data": {
+      "user_id": userId,
+      "movie_id": movie.movie_id
+    }
+  }
+
+
+  $.ajax({
+    url: "http://localhost:3000/user/movie-watched",
+    method: "POST",
+    data: JSON.stringify(req),
+    dataType: 'json',
+    contentType: "application/json",
+    success: function (data) {
+      if (data.status == 200) {
+        console.log("data published into Kafka")
+      } else {
+        console.log("error occured while publishing into Kafka")
+      }
+    },
+  });
 }
 
 function closePopup() {
   $('.modal').toggleClass('is-visible');
+
 }
