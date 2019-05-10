@@ -32,7 +32,7 @@ function setPagination(pages) {
     page: 1,
     maxVisible: 5,
     leaps: true,
-    href: "#result-page-{{number}}",
+    href: "#",
   }
   $('#page-selection').bootpag(config).on("page", function (event, /* page number here */ num) {
     listAPICall(num)
@@ -183,10 +183,12 @@ function openModal(movieObj) {
     userId = parseInt(url.substring(url.indexOf('movies-trailer') + 15).match(/\d/g).join(""))
   elem.innerHTML = movie.title
   elem = document.getElementById("youtubeVideoLink")
-  let youtubeLink = "https://www.youtube.com/embed/" + movie.youtube_id
-
+  let youtubeLink = "https://www.youtube.com/embed/" + movie.youtube_id,
+    closeVal = "closePopup(" + JSON.stringify(movie) + ")"
   elem.innerHTML = `<iframe src="` + youtubeLink + `" allowfullscreen></iframe>`
-
+  elem = document.getElementById('close-button')
+  elem.innerHTML = `<button id="close-button" type="button" class="modal-close close" onclick='` + closeVal + `'
+  data-dismiss="modal">&times;</button>`
   let req = {
     "topic": "movie_users_mapping",
     "data": {
@@ -210,9 +212,39 @@ function openModal(movieObj) {
       }
     },
   });
+
 }
 
-function closePopup() {
+function closePopup(movie) {
+  let url = window.location.href,
+    userId = parseInt(url.substring(url.indexOf('movies-trailer') + 15).match(/\d/g).join(""))
   $('.modal').toggleClass('is-visible');
+  let rating = $('input[name=rating]:checked').val()
 
+  if (rating && movie) {
+    let req = {
+      "topic": "movie_ratings",
+      "data": {
+        "user_id": userId,
+        "movie_id": movie.movie_id,
+        "rating": rating
+      }
+    }
+
+
+    $.ajax({
+      url: "http://localhost:3000/user/movie-watched",
+      method: "POST",
+      data: JSON.stringify(req),
+      dataType: 'json',
+      contentType: "application/json",
+      success: function (data) {
+        if (data.status == 200) {
+          console.log("data published into Kafka on close pop")
+        } else {
+          console.log("error occured while publishing into Kafka")
+        }
+      },
+    });
+  }
 }
