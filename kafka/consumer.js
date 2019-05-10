@@ -1,5 +1,6 @@
 import {
-  UserModel
+  RatingsModel,
+  MovieUserMatchingsModel
 }
   from '../models'
 var kafka = require('kafka-node');
@@ -33,10 +34,17 @@ var consumerGroup = new ConsumerGroup(options, topics);
 
 
 consumerGroup.on('message', function (message) {
-  let data = JSON.parse(message.value)
-  console.log("userModel=====", UserModel);
-  let userModelObj = new UserModel(data)
-  userModelObj.save()
+  let data = JSON.parse(message.value),
+    promise;
+
+  if (message.topic == "movie_ratings") {
+    promise = new RatingsModel(data).save()
+  }
+  else {
+    promise = new MovieUserMatchingsModel(data).save()
+  }
+
+  promise
     .then(data => {
       console.log("data added in Mongo");
     })
