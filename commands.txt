@@ -22,3 +22,23 @@ db.createUser({user:"admin", pwd:"admin", roles:["readWrite", "dbAdmin"]});
 https://blog.jeremylikness.com/mongodb-on-windows-in-minutes-with-docker-3e412f076762
 
  mongo --host mongodb://admin:admin@192.168.99.100:27017/movie_analysis
+
+
+3) First time node install
+- npm install
+- npm i babel-cli -g
+- npm i nodemon -g
+
+After installation
+- goto main folder ./movie-trailer-bigdata
+  run command nodemon
+
+instructions to run kafka consumer
+- goto kafka folder
+- run babel-node consumer.js
+
+3) Spark
+
+Steps to run spark job
+
+spark-submit --master local[*] --conf "spark.mongodb.input.uri=mongodb://192.168.99.100/movie_analysis" --conf "spark.mongodb.output.uri=mongodb://192.168.99.100/movie_analysis" --packages org.mongodb.spark:mongo-spark-connector_2.11:2.4.0 trending.py 
