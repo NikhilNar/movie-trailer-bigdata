@@ -64,7 +64,7 @@ const movieList = (params) => {
                     "data": []
                 }
 
-                for (let i = page * 10 - 10; i < page * 10; i++) {
+                for (let i = page * 12 - 12; i < page * 12; i++) {
                     if (data.length > i)
                         response.data.push(data[i])
                     else break;
