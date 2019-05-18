@@ -42,3 +42,6 @@ instructions to run kafka consumer
 Steps to run spark job
 
 spark-submit --master local[*] --conf "spark.mongodb.input.uri=mongodb://192.168.99.100/movie_analysis" --conf "spark.mongodb.output.uri=mongodb://192.168.99.100/movie_analysis" --packages org.mongodb.spark:mongo-spark-connector_2.11:2.4.0 trending.py 
+
+
+C:\Users\suraj\Downloads\Documents\Semester 2\Big Data\Assignments\Project\movie-trailer-bigdata
